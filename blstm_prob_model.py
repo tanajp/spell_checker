@@ -1,3 +1,22 @@
+from janome.tokenizer import Tokenizer
+
+#前処理
+
+data = [
+    "100名まで収容可能な会場。",
+    "ドレスのご試着は、",
+    "ご要望にお応えします。",
+    "写真撮影を行います。",
+    "宜しくお願いします。"
+]
+
+t = Tokenizer()
+def wakati(text):
+    w = t.tokenize(text, wakati=True)
+    return " ".join(w)
+
+data = [wakati(w) for w in data]
+
 from tensorflow import keras
 from keras.preprocessing import sequence
 from keras import preprocessing
@@ -8,16 +27,8 @@ from keras.preprocessing.text import Tokenizer
 from keras.models import Sequential
 from keras.layers import Dense, Dropout, Embedding, LSTM, Bidirectional
 
-
-data = [
-    "100 名 まで 収容 可能 な 会場 。",
-    "ドレス の ご 試着 は 、",
-    "ご 要望 に お 応え し ます 。",
-    "写真 撮影 を 行い ます 。",
-    "宜しく お 願い し ます 。"
-]
-
 # 前処理
+
 tokenizer = Tokenizer()
 tokenizer.fit_on_texts(data)
 vocab = tokenizer.word_index
@@ -61,7 +72,8 @@ model.compile('adam', 'binary_crossentropy', metrics=['accuracy'])
 model.fit(x, y, epochs=1000)
 
 # 発生確率を計算する.
-sentence = "ドレス の を ご 試着 は 、"
+input_sentence = "100名まで収容可能な海上。"
+sentence = t.tokenize(input_sentence, wakati=True)
 tok = tokenizer.texts_to_sequences([sentence])[0]
 x_test, y_test = prepare_sentence(tok, maxlen)
 x_test = np.array(x_test)
@@ -72,8 +84,10 @@ vocab_inv = {v: k for k, v in vocab.items()}
 # OK/NG確率に基づく正常or異常の判定.
 log_p_sentence = 0
 err = []
+words = []
 for i, prob in enumerate(p_pred):
     word = vocab_inv[y_test[i]+1]
+    words.append(word)
     history = ' '.join([vocab_inv[w] for w in x_test[i, :] if w != 0])
     prob_word = prob[y_test[i]]
     log_p_sentence += np.log(prob_word)
@@ -87,8 +101,8 @@ print('Prob. sentence: {}'.format(np.exp(log_p_sentence)))
 # 「誤字脱字箇所」と「誤字脱字を含む文」を出力.
 if len(err) != 0:
     print("NG : " + str(err))
-    print(sentence)
+    print(input_sentence)
 
+# 訂正箇所なしの場合
 else:
     print("OK")
-
