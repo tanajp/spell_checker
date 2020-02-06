@@ -122,8 +122,7 @@ if len(err) != 0:
 else:
     print("OK")
 ```
-
-<br>
+***
 
 ### 言語モデル
 
