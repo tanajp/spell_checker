@@ -7,6 +7,7 @@ with io.open(path, encoding="utf-8") as f:
     data = f.read().split()
 
 # 前処理 (分かち書き)
+t = Tokenizer()
 def wakati(text):
     w = t.tokenize(text, wakati=True)
     return " ".join(w)
