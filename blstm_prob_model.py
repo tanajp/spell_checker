@@ -1,16 +1,12 @@
 from janome.tokenizer import Tokenizer
+import io
 
-# データ入力
-data = [
-    "100名まで収容可能な会場。",
-    "ドレスのご試着は、",
-    "ご要望にお応えします。",
-    "写真撮影を行います。",
-    "宜しくお願いします。"
-]
+# データの読み込み
+path = "data.txt"
+with io.open(path, encoding="utf-8") as f:
+    text = f.read().split()
 
-# 前処理
-t = Tokenizer()
+# 前処理 (分かち書き)
 def wakati(text):
     w = t.tokenize(text, wakati=True)
     return " ".join(w)
@@ -27,7 +23,7 @@ from keras.preprocessing.text import Tokenizer
 from keras.models import Sequential
 from keras.layers import Dense, Dropout, Embedding, LSTM, Bidirectional
 
-# 前処理
+# 前処理 (ベクトル化)
 
 tokenizer = Tokenizer()
 tokenizer.fit_on_texts(data)
@@ -46,6 +42,7 @@ def prepare_sentence(seq, maxlen):
         y.append(w)
     return x, y
 
+# xとyの準備
 maxlen = max([len(seq) for seq in seqs])
 x = []
 y = []
