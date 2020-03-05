@@ -40,7 +40,6 @@ from keras.models import Sequential
 from keras.layers import Dense, Dropout, Embedding, LSTM, Bidirectional
 
 # 前処理 (ベクトル化)
-
 tokenizer = Tokenizer()
 tokenizer.fit_on_texts(data)
 vocab = tokenizer.word_index
@@ -58,6 +57,7 @@ def prepare_sentence(seq, maxlen):
         y.append(w)
     return x, y
 
+# xとyの準備
 maxlen = max([len(seq) for seq in seqs])
 x = []
 y = []
