@@ -31,7 +31,7 @@ tokenizer.fit_on_texts(data)
 vocab = tokenizer.word_index
 seqs = tokenizer.texts_to_sequences(data)
 
-# シーケンスを同じ長さになるように詰める.
+# シーケンスを同じ長さになるように詰める
 def prepare_sentence(seq, maxlen):
     x = []
     y = []
@@ -66,11 +66,11 @@ model.add(Dense(len(vocab), activation='softmax'))
 
 model.compile('adam', 'binary_crossentropy', metrics=['accuracy'])
 
-# 学習させる.
+# 学習させる
 model.fit(x, y, epochs=1000)
 
-# 発生確率を計算する.
-input_sentence = "100名まで収容可能な海上。"
+# 発生確率を計算する
+input_sentence = "私は犬に散歩する。"
 sentence = t.tokenize(input_sentence, wakati=True)
 tok = tokenizer.texts_to_sequences([sentence])[0]
 x_test, y_test = prepare_sentence(tok, maxlen)
@@ -79,7 +79,7 @@ y_test = np.array(y_test) - 1
 p_pred = model.predict(x_test)  
 vocab_inv = {v: k for k, v in vocab.items()}
 
-# OK/NG確率に基づく正常or異常の判定.
+# OK/NG確率に基づく正常or異常の判定
 log_p_sentence = 0
 err = []
 words = []
@@ -96,7 +96,7 @@ for i, prob in enumerate(p_pred):
     print('P(w={}|h={})={}'.format(word, history, prob_word))
 print('Prob. sentence: {}'.format(np.exp(log_p_sentence)))
 
-# 「誤字脱字箇所」と「誤字脱字を含む文」を出力.
+# 「誤字脱字箇所」と「誤字脱字を含む文」を出力
 if len(err) != 0:
     print("NG : " + str(err))
     print(input_sentence)
