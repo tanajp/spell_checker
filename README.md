@@ -19,7 +19,7 @@ import io
 # データの読み込み
 path = "data.txt"
 with io.open(path, encoding="utf-8") as f:
-    text = f.read().split()
+    data = f.read().split()
 
 # 前処理 (分かち書き)
 t = Tokenizer()
