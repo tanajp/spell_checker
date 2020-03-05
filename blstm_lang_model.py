@@ -1,15 +1,11 @@
 from janome.tokenizer import Tokenizer
 
-# データ入力
-data = """
-    100名まで収容可能な会場。\n
-    ドレスのご試着は、\n
-    ご要望にお応えします。\n
-    写真撮影を行います。\n
-    宜しく お願いします。\n
-"""
+# データの読み込み
+path = "data.txt"
+file = open(path, "r", encoding="utf-8")
+text = file.read()
 
-# 前処理
+# 前処理 (分かち書き)
 t = Tokenizer()
 def wakati(text):
     w = t.tokenize(text, wakati=True)
@@ -22,7 +18,7 @@ import pandas as pd
 from keras.preprocessing.text import Tokenizer
 from keras.utils import to_categorical
 from keras.models import Sequential
-from keras.layers import Dence, Dropout, Embedding, LSTM, Bidirectional
+from keras.layers import Dense, Dropout, Embedding, LSTM, Bidirectional
 
 # モデルから文字列を生成。
 def generate_seq(model, tokenizer, seed_text, n_words):
@@ -40,7 +36,7 @@ def generate_seq(model, tokenizer, seed_text, n_words):
         in_text, result = out_word, result + ' ' + out_word
     return result
 
-# 前処理
+# 前処理 (ベクトル化)
 tokenizer = Tokenizer()
 tokenizer.fit_on_texts([data])
 encoded = tokenizer.texts_to_sequences([data])[0]
@@ -92,4 +88,4 @@ for i in range(len(typo_index)):
 
 # 評価
 for i in range(len(search_word)):
-    print("prediction: " + generate_seq(model, tokenizer, str(search_word[i]) , 1))
+    print("prediction: " + generate_seq(model, tokenizer, str(search_word[i]) , 2))
