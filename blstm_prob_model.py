@@ -90,7 +90,7 @@ for i, prob in enumerate(p_pred):
     prob_word = prob[y_test[i]]
     log_p_sentence += np.log(prob_word)
     
-    if prob_word < 0.03:
+    if prob_word < 0.01:
         err.append(word)
 
     print('P(w={}|h={})={}'.format(word, history, prob_word))
