@@ -1,7 +1,6 @@
 from janome.tokenizer import Tokenizer
 
-#前処理
-
+# データ入力
 data = [
     "100名まで収容可能な会場。",
     "ドレスのご試着は、",
@@ -10,6 +9,7 @@ data = [
     "宜しくお願いします。"
 ]
 
+# 前処理
 t = Tokenizer()
 def wakati(text):
     w = t.tokenize(text, wakati=True)
