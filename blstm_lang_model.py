@@ -20,13 +20,13 @@ from keras.utils import to_categorical
 from keras.models import Sequential
 from keras.layers import Dense, Dropout, Embedding, LSTM, Bidirectional
 
-# モデルから文字列を生成。
+# モデルから文字列を生成.
 def generate_seq(model, tokenizer, seed_text, n_words):
     in_text, result = seed_text, seed_text
     for _ in range(n_words):
         encoded = tokenizer.texts_to_sequences([in_text])[0]
         encoded = np.array(encoded)
-        # 学習データから文字列を予測。
+        # 学習データから文字列を予測.
         yhat = model.predict_classes(encoded, verbose=0)
         out_word = ''
         for word, index in tokenizer.word_index.items():
@@ -41,7 +41,7 @@ tokenizer = Tokenizer()
 tokenizer.fit_on_texts([data])
 encoded = tokenizer.texts_to_sequences([data])[0]
 
-# 語彙のサイズを決定。
+# 語彙のサイズを決定.
 vocab_size = len(tokenizer.word_index) + 1
 print('Vocabulary Size: %d' % vocab_size)
 
