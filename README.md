@@ -14,17 +14,14 @@ Bidirectional LSTMによる誤字脱字、衍字の検出、置き換え。
 
 ```python
 from janome.tokenizer import Tokenizer
+import io
 
-#前処理
+# データの読み込み
+path = "data.txt"
+with io.open(path, encoding="utf-8") as f:
+    text = f.read().split()
 
-data = [
-    "100名まで収容可能な会場。",
-    "ドレスのご試着は、",
-    "ご要望にお応えします。",
-    "写真撮影を行います。",
-    "宜しくお願いします。"
-]
-
+# 前処理 (分かち書き)
 t = Tokenizer()
 def wakati(text):
     w = t.tokenize(text, wakati=True)
@@ -42,7 +39,7 @@ from keras.preprocessing.text import Tokenizer
 from keras.models import Sequential
 from keras.layers import Dense, Dropout, Embedding, LSTM, Bidirectional
 
-# 前処理
+# 前処理 (ベクトル化)
 
 tokenizer = Tokenizer()
 tokenizer.fit_on_texts(data)
@@ -127,17 +124,14 @@ else:
 ### 言語モデル
 
 ```python
-# 前処理
 from janome.tokenizer import Tokenizer
 
-data = """
-    100名まで収容可能な会場。\n
-    ドレスのご試着は、\n
-    ご要望にお応えします。\n
-    写真撮影を行います。\n
-    宜しくお願いします。\n
-"""
+# データの読み込み
+path = "data.txt"
+file = open(path, "r", encoding="utf-8")
+text = file.read()
 
+# 前処理 (分かち書き)
 t = Tokenizer()
 def wakati(text):
     w = t.tokenize(text, wakati=True)
@@ -154,7 +148,7 @@ from keras.layers import Dense
 from keras.layers import LSTM
 from keras.layers import Embedding
 
-# モデルから文字列を生成。
+# モデルから文字列を生成.
 def generate_seq(model, tokenizer, seed_text, n_words):
     in_text, result = seed_text, seed_text
     for _ in range(n_words):
@@ -170,12 +164,12 @@ def generate_seq(model, tokenizer, seed_text, n_words):
         in_text, result = out_word, result + ' ' + out_word
     return result
 
-# 前処理
+# 前処理 (ベクトル化)
 tokenizer = Tokenizer()
 tokenizer.fit_on_texts([data])
 encoded = tokenizer.texts_to_sequences([data])[0]
 
-# 語彙のサイズを決定。
+# 語彙のサイズを決定.
 vocab_size = len(tokenizer.word_index) + 1
 print('Vocabulary Size: %d' % vocab_size)
 
