@@ -1,11 +1,26 @@
+from janome.tokenizer import Tokenizer
+
+data = """
+    100名まで収容可能な会場。\n
+    ドレスのご試着は、\n
+    ご要望にお応えします。\n
+    写真撮影を行います。\n
+    宜しく お願いします。\n
+"""
+
+t = Tokenizer()
+def wakati(text):
+    w = t.tokenize(text, wakati=True)
+    return " ".join(w)
+
+data = [wakati(w) for w in data]
+
 import numpy as np
 import pandas as pd
 from keras.preprocessing.text import Tokenizer
 from keras.utils import to_categorical
 from keras.models import Sequential
-from keras.layers import Dense
-from keras.layers import LSTM
-from keras.layers import Embedding
+from keras.layers import Dence, Dropout, Embedding, LSTM, Bidirectional
 
 # モデルから文字列を生成。
 def generate_seq(model, tokenizer, seed_text, n_words):
@@ -22,14 +37,6 @@ def generate_seq(model, tokenizer, seed_text, n_words):
                 break
         in_text, result = out_word, result + ' ' + out_word
     return result
-
-data = """
-    100 名 まで 収容 可能 な 会場 。\n
-    ドレス の ご 試着 は 、\n
-    ご 要望 に お 応え し ます 。\n
-    写真 撮影 を 行い ます 。\n
-    宜しく お 願い し ます 。\n
-"""
 
 # 前処理
 tokenizer = Tokenizer()
